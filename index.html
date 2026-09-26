@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Love Letters & Sky Garden</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: '#fbf8f3',
+                        parchment: '#f5f0e6',
+                        warmBorder: '#e8ded0',
+                        sepiaText: '#4a3b32',
+                        dustyRose: '#d98880',
+                        softPink: '#fbe3e0',
+                        pastelSage: '#cde3d6',
+                        skyBlue: '#87ceeb',
+                        grassGreen: '#7ec850'
+                    },
+                    fontFamily: {
+                        handwriting: ['Caveat', 'cursive'],
+                        serifHeader: ['Playfair Display', 'serif'],
+                        sansBody: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base Smooth Scroll & Global Font */
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: #4a3b32;
+            background-color: #fbf8f3;
+            overflow-x: hidden;
+        }
+
+        /* Cream Vintage Section Background */
+        .cream-bg {
+            background-color: #fbf8f3;
+            background-image: radial-gradient(#e8e0d5 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* Sky Section Gradient Transition */
+        .sky-section {
+            background: linear-gradient(180deg, #fbf8f3 0%, #cde8f6 15%, #87ceeb 40%, #a0e0ff 100%);
+            position: relative;
+        }
+
+        /* Custom Bouncy Spring Physics */
+        .bounce-card {
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+        }
+        .bounce-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 16px 24px -4px rgba(74, 59, 50, 0.12), 0 6px 12px -4px rgba(74, 59, 50, 0.08);
+        }
+
+        /* 3D Envelope Styling */
+        .envelope-body {
+            background: linear-gradient(135deg, #fffaf5 0%, #f4eae1 100%);
+            border: 2px solid #e3d3c3;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(74, 59, 50, 0.08);
+            position: relative;
+        }
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(180deg, #f0e2d5 0%, rgba(240, 226, 213, 0) 100%);
+            border-bottom: 2px solid #e3d3c3;
+            border-radius: 14px 14px 100% 100%;
+            pointer-events: none;
+        }
+        .wax-seal {
+            background: radial-gradient(circle at 35% 35%, #e06d63, #a83d35);
+            box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.4), inset 0 -2px 4px rgba(0,0,0,0.4), 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        /* Floating Cloud Keyframe Animation */
+        @keyframes floatCloud {
+            0% { transform: translateX(-150px); }
+            100% { transform: translateX(calc(100vw + 150px)); }
+        }
+        .cloud-1 { animation: floatCloud 38s linear infinite; }
+        .cloud-2 { animation: floatCloud 52s linear infinite 12s; }
+        .cloud-3 { animation: floatCloud 45s linear infinite 22s; }
+
+        /* Dog Wag Tail Animation */
+        @keyframes tailWag {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(18deg); }
+        }
+        .dog-tail {
+            transform-origin: bottom left;
+            animation: tailWag 0.6s ease-in-out infinite;
+        }
+
+        /* Floating Hearts on Petting */
+        @keyframes floatUpHeart {
+            0% { opacity: 1; transform: translateY(0) scale(0.8) rotate(0deg); }
+            100% { opacity: 0; transform: translateY(-90px) scale(1.4) rotate(15deg); }
+        }
+        .pet-heart {
+            position: absolute;
+            animation: floatUpHeart 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            pointer-events: none;
+            font-size: 1.8rem;
+            z-index: 40;
+        }
+
+        /* Parchment Modal Text area */
+        .parchment-sheet {
+            background-color: #fdfbf7;
+            background-image: linear-gradient(#eee4d8 1px, transparent 1px);
+            background-size: 100% 2.2rem;
+            line-height: 2.2rem;
+            border: 1px solid #e5dacb;
+        }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f5f0e6;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d98880;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="cream-bg min-h-screen flex flex-col antialiased">
+
+    <!-- TOP STICKY BAR -->
+    <header class="sticky top-0 z-30 bg-cream/90 backdrop-blur-md border-b border-warmBorder shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+            
+            <!-- Logo / Title -->
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 wax-seal rounded-full flex items-center justify-center text-white text-base shadow-sm">
+                    <i class="fa-solid fa-heart"></i>
+                </div>
+                <div>
+                    <h1 class="font-serifHeader font-bold text-lg md:text-xl text-sepiaText">Our Daily Love Letters</h1>
+                    <p class="text-xs text-dustyRose font-medium">Warm Keepsakes & Flower Garden</p>
+                </div>
+            </div>
+
+            <!-- Role Selector & Audio Player -->
+            <div class="flex items-center gap-3">
+                
+                <!-- Role Switcher -->
+                <div class="bg-parchment border border-warmBorder p-1 rounded-2xl flex items-center text-xs shadow-inner">
+                    <button id="role-him" onclick="setPersona('him')" class="px-3 py-1.5 rounded-xl font-semibold transition-all bg-sepiaText text-white shadow-sm flex items-center gap-1.5">
+                        <span>👦</span>
+                        <span>I'm Him 💙</span>
+                    </button>
+                    <button id="role-her" onclick="setPersona('her')" class="px-3 py-1.5 rounded-xl font-semibold transition-all text-sepiaText hover:text-sepiaText/80 flex items-center gap-1.5">
+                        <span>👧</span>
+                        <span>I'm Her 💖</span>
+                    </button>
+                </div>
+
+                <!-- Music Control Bar -->
+                <div class="flex items-center bg-parchment border border-warmBorder px-3 py-1.5 rounded-full text-xs shadow-inner space-x-2">
+                    <button id="music-play-btn" onclick="toggleMusic()" class="w-7 h-7 rounded-full bg-dustyRose hover:bg-dustyRose/90 text-white flex items-center justify-center transition-transform active:scale-90">
+                        <i id="music-icon" class="fa-solid fa-music text-xs"></i>
+                    </button>
+                    <div class="hidden sm:block text-left text-[11px] leading-tight">
+                        <p id="music-title" class="font-bold text-sepiaText">Our Acoustic Song</p>
+                        <p id="music-sub" class="text-dustyRose">Click to Play</p>
+                    </div>
+                    <!-- Upload Custom Song -->
+                    <label class="cursor-pointer text-sepiaText/60 hover:text-sepiaText text-xs px-1" title="Upload custom song MP3">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <input type="file" id="custom-mp3" accept="audio/*" class="hidden" onchange="uploadAudioSong(event)">
+                    </label>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- SECTION 1: LOVE LETTERS & ENVELOPES -->
+    <section class="max-w-6xl mx-auto px-4 pt-8 pb-16 w-full">
+        
+        <!-- Welcome Persona Ribbon -->
+        <div class="bg-parchment/90 border border-warmBorder rounded-2xl p-4 mb-8 flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm">
+            <div class="flex items-center space-x-3 text-left">
+                <div id="persona-badge-icon" class="w-12 h-12 rounded-full bg-softPink border-2 border-dustyRose flex items-center justify-center text-2xl shadow-sm">
+                    👦
+                </div>
+                <div>
+                    <h2 id="persona-welcome-title" class="font-serifHeader text-lg md:text-xl font-bold text-sepiaText">Welcome back, Handsome!</h2>
+                    <p id="persona-welcome-sub" class="text-xs text-dustyRose font-medium">Viewing as Him. Any letter you open will automatically show "Seen by Him" timestamp for her!</p>
+                </div>
+            </div>
+
+            <!-- Jump / Quick Nav -->
+            <div class="flex items-center gap-2 text-xs">
+                <a href="#flower-atelier" class="bg-cream border border-warmBorder hover:bg-parchment text-sepiaText px-4 py-2 rounded-xl font-semibold transition-all shadow-sm flex items-center gap-1.5">
+                    <i class="fa-solid fa-spa text-dustyRose"></i>
+                    <span>Send Bouquet</span>
+                </a>
+                <a href="#sky-garden" class="bg-dustyRose hover:bg-dustyRose/90 text-white px-4 py-2 rounded-xl font-semibold transition-all shadow-sm flex items-center gap-1.5">
+                    <i class="fa-solid fa-dog"></i>
+                    <span>Pet the Dog ↓</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Section Header -->
+        <div class="text-center mb-8">
+            <span class="text-xs uppercase tracking-widest text-dustyRose font-bold border-b border-dustyRose pb-1">Open When...</span>
+            <h2 class="font-serifHeader text-2xl md:text-4xl text-sepiaText font-bold mt-2">Love Letters & Envelopes</h2>
+            <p class="font-handwriting text-2xl text-dustyRose mt-1">Written for every mood, moment & feeling</p>
+        </div>
+
+        <!-- Envelope Grid -->
+        <div id="envelope-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Dynamic envelopes populated via JavaScript -->
+        </div>
+
+    </section>
+
+    <!-- SECTION 2: FLORAL ATELIER / BOUQUET & LETTER CREATOR -->
+    <section id="flower-atelier" class="bg-parchment/60 border-y border-warmBorder py-16 px-4">
+        <div class="max-w-5xl mx-auto">
+            
+            <div class="text-center mb-10">
+                <span class="text-xs uppercase tracking-widest text-dustyRose font-bold border-b border-dustyRose pb-1">Gift Atelier</span>
+                <h2 class="font-serifHeader text-2xl md:text-4xl text-sepiaText font-bold mt-2">Send a Letter & Bouquet</h2>
+                <p class="font-handwriting text-2xl text-dustyRose mt-1">Pick custom realistic flowers, wrap styles, and write a sweet note</p>
+            </div>
+
+            <div class="bg-cream rounded-3xl p-6 md:p-8 border border-warmBorder shadow-md">
+                <form id="atelier-form" onsubmit="handleSendGift(event)" class="space-y-6">
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Sender Choice -->
+                        <div>
+                            <label class="block text-xs font-bold text-sepiaText uppercase tracking-wider mb-2">Sender</label>
+                            <select id="gift-sender" class="w-full bg-parchment border border-warmBorder rounded-xl p-3 text-sm text-sepiaText font-medium focus:outline-none focus:ring-2 focus:ring-dustyRose">
+                                <option value="Him">From: Him (To Her 💖)</option>
+                                <option value="Her">From: Her (To Him 💙)</option>
+                            </select>
+                        </div>
+
+                        <!-- Envelope / Gift Title -->
+                        <div>
+                            <label class="block text-xs font-bold text-sepiaText uppercase tracking-wider mb-2">Title / Open When Prompt</label>
+                            <input type="text" id="gift-title" placeholder="e.g. Read when you're feeling down..." required
+                                   class="w-full bg-parchment border border-warmBorder rounded-xl p-3 text-sm text-sepiaText placeholder-sepiaText/40 focus:outline-none focus:ring-2 focus:ring-dustyRose">
+                        </div>
+                    </div>
+
+                    <!-- Flowers Selection -->
+                    <div>
+                        <label class="block text-xs font-bold text-sepiaText uppercase tracking-wider mb-2">Select Bouquet Flowers (Mix up to 4)</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                            <label class="cursor-pointer border border-warmBorder p-3 rounded-xl bg-parchment/60 hover:bg-parchment flex items-center gap-2 transition-all">
+                                <input type="checkbox" name="gift-flowers" value="🌹 Red Roses" checked class="accent-dustyRose">
+                                <span class="font-medium text-sepiaText">🌹 Red Roses</span>
+                            </label>
+                            <label class="cursor-pointer border border-warmBorder p-3 rounded-xl bg-parchment/60 hover:bg-parchment flex items-center gap-2 transition-all">
+                                <input type="checkbox" name="gift-flowers" value="🌻 Sunflowers" class="accent-dustyRose">
+                                <span class="font-medium text-sepiaText">🌻 Sunflowers</span>
+                            </label>
+                            <label class="cursor-pointer border border-warmBorder p-3 rounded-xl bg-parchment/60 hover:bg-parchment flex items-center gap-2 transition-all">
+                                <input type="checkbox" name="gift-flowers" value="🌸 White Lilies" class="accent-dustyRose">
+                                <span class="font-medium text-sepiaText">🌸 Lilies</span>
+                            </label>
+                            <label class="cursor-pointer border border-warmBorder p-3 rounded-xl bg-parchment/60 hover:bg-parchment flex items-center gap-2 transition-all">
+                                <input type="checkbox" name="gift-flowers" value="🌷 Tulips" class="accent-dustyRose">
+                                <span class="font-medium text-sepiaText">🌷 Tulips</span>
+                            </label>
+                            <label class="cursor-pointer border border-warmBorder p-3 rounded-xl bg-parchment/60 hover:bg-parchment flex items-center gap-2 transition-all">
+                                <input type="checkbox" name="gift-flowers" value="🌺 Peonies" class="accent-dustyRose">
+                                <span class="font-medium text-sepiaText">🌺 Peonies</span>
+                            </label>
+                            <label class="cursor-pointer border border-warmBorder p-3 rounded-xl bg-parchment/60 hover:bg-parchment flex items-center gap-2 transition-all">
+                                <input type="checkbox" name="gift-flowers" value="🌼 Daisies" class="accent-dustyRose">
+                                <span class="font-medium text-sepiaText">🌼 Daisies</span>
+                            </label>
+                            <label class="cursor-pointer border border-warmBorder p-3 rounded-xl bg-parchment/60 hover:bg-parchment flex items-center gap-2 transition-all">
+                                <input type="checkbox" name="gift-flowers" value="🪻 Lavender" class="accent-dustyRose">
+                                <span class="font-medium text-sepiaText">🪻 Lavender</span>
+                            </label>
+                            <label class="cursor-pointer border border-warmBorder p-3 rounded-xl bg-parchment/60 hover:bg-parchment flex items-center gap-2 transition-all">
+                                <input type="checkbox" name="gift-flowers" value="💐 Hydrangeas" class="accent-dustyRose">
+                                <span class="font-medium text-sepiaText">💐 Hydrangeas</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Bouquet Wrapping Paper -->
+                    <div>
+                        <label class="block text-xs font-bold text-sepiaText uppercase tracking-wider mb-2">Wrapping Ribbon Style</label>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                            <label class="cursor-pointer border border-warmBorder p-2.5 rounded-xl bg-amber-100/60 text-center font-medium">
+                                <input type="radio" name="gift-wrap" value="kraft" checked class="accent-dustyRose mr-1">
+                                <span>Rustic Kraft</span>
+                            </label>
+                            <label class="cursor-pointer border border-warmBorder p-2.5 rounded-xl bg-pink-100/60 text-center font-medium">
+                                <input type="radio" name="gift-wrap" value="pink" class="accent-dustyRose mr-1">
+                                <span>Pastel Pink</span>
+                            </label>
+                            <label class="cursor-pointer border border-warmBorder p-2.5 rounded-xl bg-slate-100/80 text-center font-medium">
+                                <input type="radio" name="gift-wrap" value="silk" class="accent-dustyRose mr-1">
+                                <span>Silk Ribbon</span>
+                            </label>
+                            <label class="cursor-pointer border border-warmBorder p-2.5 rounded-xl bg-yellow-50 text-center font-medium">
+                                <input type="radio" name="gift-wrap" value="parchment" class="accent-dustyRose mr-1">
+                                <span>Parchment</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Letter Message -->
+                    <div>
+                        <label class="block text-xs font-bold text-sepiaText uppercase tracking-wider mb-2">Love Letter Message</label>
+                        <textarea id="gift-message" rows="4" placeholder="Write your heartfelt letter here..." required
+                                  class="w-full bg-parchment border border-warmBorder rounded-xl p-3 text-sm text-sepiaText font-sansBody focus:outline-none focus:ring-2 focus:ring-dustyRose"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-dustyRose hover:bg-dustyRose/90 text-white py-3.5 rounded-xl font-bold text-sm shadow-md transition-transform active:scale-[0.99] flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>Deliver Letter & Bouquet</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Delivered Floral Gifts Grid -->
+            <div class="mt-12 text-center">
+                <h3 class="font-serifHeader text-2xl text-sepiaText font-bold mb-6">Delivered Bouquet Keepsakes</h3>
+                <div id="bouquet-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Dynamic bouquets populated via JavaScript -->
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 3: THE INTERACTIVE SKY GARDEN & PET DOG -->
+    <section id="sky-garden" class="sky-section min-h-screen pt-24 pb-12 flex flex-col justify-between relative overflow-hidden">
+        
+        <!-- Drifting SVG Clouds -->
+        <div class="absolute top-10 left-0 right-0 pointer-events-none z-0">
+            <svg class="cloud-1 absolute top-2 w-32 md:w-48 opacity-90" viewBox="0 0 100 60" fill="white">
+                <path d="M10,40 Q20,20 40,30 Q60,10 80,30 Q90,30 90,40 Q95,50 80,50 L10,50 Z"/>
+            </svg>
+            <svg class="cloud-2 absolute top-16 w-40 md:w-56 opacity-80" viewBox="0 0 100 60" fill="white">
+                <path d="M10,40 Q20,20 40,30 Q60,10 80,30 Q90,30 90,40 Q95,50 80,50 L10,50 Z"/>
+            </svg>
+            <svg class="cloud-3 absolute top-8 w-36 md:w-44 opacity-85" viewBox="0 0 100 60" fill="white">
+                <path d="M10,40 Q20,20 40,30 Q60,10 80,30 Q90,30 90,40 Q95,50 80,50 L10,50 Z"/>
+            </svg>
+        </div>
+
+        <!-- Sky Garden Intro Header -->
+        <div class="max-w-xl mx-auto text-center px-4 z-10">
+            <span class="bg-white/80 backdrop-blur-sm text-sepiaText text-xs uppercase font-bold px-4 py-1.5 rounded-full shadow-sm">
+                🌤️ Scroll Down to Our Garden
+            </span>
+            <h2 class="font-serifHeader text-3xl md:text-5xl text-sepiaText font-bold mt-4 drop-shadow-sm">Our Peaceful Sky Garden</h2>
+            <p class="font-handwriting text-2xl md:text-3xl text-sepiaText/90 mt-2">Touch and pet our sweet little pup below! 🐶💕</p>
+            
+            <!-- Pet Counter Badge -->
+            <div class="mt-4 inline-flex items-center gap-2 bg-white/90 backdrop-blur-sm border border-white/60 px-5 py-2 rounded-full shadow-md">
+                <i class="fa-solid fa-bone text-amber-600 text-sm"></i>
+                <span id="pet-count-display" class="font-bold text-sepiaText text-sm">Pets Received: 0 💕</span>
+            </div>
+        </div>
+
+        <!-- LUSH GRASSY GARDEN FLOOR & ANIMATED PET DOG -->
+        <div class="relative w-full mt-20 z-10">
+            
+            <!-- Floating Garden Flowers SVG Background -->
+            <div class="absolute -top-12 inset-x-0 flex justify-around px-8 pointer-events-none">
+                <span class="text-3xl animate-bounce">🌸</span>
+                <span class="text-2xl animate-pulse">🌼</span>
+                <span class="text-4xl">🌷</span>
+                <span class="text-3xl animate-bounce" style="animation-delay: 0.3s">🌺</span>
+                <span class="text-2xl animate-pulse">🌻</span>
+            </div>
+
+            <!-- Grassy Field Container -->
+            <div class="bg-grassGreen border-t-8 border-green-600/30 pt-12 pb-16 px-4 text-center relative shadow-inner">
+                
+                <!-- DOG INTERACTIVE CONTAINER -->
+                <div id="dog-container" onclick="petTheDog(event)" class="relative inline-block cursor-pointer group my-4 select-none">
+                    
+                    <!-- Floating Hearts Mount Area -->
+                    <div id="heart-spawn-area" class="absolute -top-12 left-1/2 -translate-x-1/2 w-full h-12 pointer-events-none"></div>
+
+                    <!-- Cute SVG Cartoon Dog -->
+                    <div id="dog-body" class="w-48 h-48 md:w-56 md:h-56 mx-auto transition-transform duration-200 group-hover:scale-105 active:scale-95">
+                        <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow-xl">
+                            <!-- Dog Shadow -->
+                            <ellipse cx="100" cy="180" rx="60" ry="12" fill="rgba(0,0,0,0.15)" />
+                            
+                            <!-- Tail -->
+                            <path class="dog-tail" d="M 140 140 Q 175 120 165 95" stroke="#d9822b" stroke-width="14" stroke-linecap="round" fill="none"/>
+                            
+                            <!-- Body -->
+                            <rect x="65" y="100" width="80" height="65" rx="30" fill="#f4a259"/>
+                            
+                            <!-- Paws -->
+                            <rect x="75" y="155" width="22" height="22" rx="10" fill="#e08b3e"/>
+                            <rect x="110" y="155" width="22" height="22" rx="10" fill="#e08b3e"/>
+                            
+                            <!-- Ears -->
+                            <ellipse cx="58" cy="70" rx="16" ry="32" fill="#ba631b" transform="rotate(-15 58 70)"/>
+                            <ellipse cx="142" cy="70" rx="16" ry="32" fill="#ba631b" transform="rotate(15 142 70)"/>
+                            
+                            <!-- Head -->
+                            <circle cx="100" cy="85" r="42" fill="#f4a259"/>
+                            
+                            <!-- Snout -->
+                            <ellipse cx="100" cy="95" rx="22" ry="16" fill="#fff5ea"/>
+                            <ellipse cx="100" cy="88" rx="8" ry="6" fill="#3a2518"/>
+                            
+                            <!-- Eyes -->
+                            <circle cx="84" cy="75" r="5" fill="#2d1c13"/>
+                            <circle cx="116" cy="75" r="5" fill="#2d1c13"/>
+                            <circle cx="82" cy="73" r="2" fill="white"/>
+                            <circle cx="114" cy="73" r="2" fill="white"/>
+                            
+                            <!-- Cute Tongue -->
+                            <path id="dog-tongue" d="M 95 102 Q 100 116 105 102 Z" fill="#e86a7c" />
+                            
+                            <!-- Collar -->
+                            <rect x="75" y="118" width="50" height="8" rx="4" fill="#d98880"/>
+                            <circle cx="100" cy="126" r="4" fill="#ffd166"/>
+                        </svg>
+                    </div>
+
+                    <!-- Click Instruction Badge -->
+                    <div class="mt-2 inline-block bg-white/90 text-sepiaText text-xs font-bold px-4 py-1.5 rounded-full shadow-md group-hover:bg-softPink transition-colors">
+                        🐾 Touch / Click to pet me! 💖
+                    </div>
+                </div>
+
+                <p class="text-white/90 text-xs mt-4 font-medium">Made with all my heart • Forever & Always</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- VIEW LETTER ENVELOPE MODAL -->
+    <div id="view-letter-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-sepiaText/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div class="relative w-full max-w-2xl max-h-[90vh] flex flex-col">
+            
+            <button onclick="closeLetterModal()" class="absolute -top-10 right-0 text-white hover:text-softPink text-2xl z-20">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- Parchment Paper Sheet -->
+            <div class="parchment-sheet rounded-3xl p-6 md:p-10 text-sepiaText overflow-y-auto custom-scrollbar shadow-2xl relative">
+                
+                <div class="flex justify-between items-start border-b border-warmBorder pb-4 mb-6">
+                    <div>
+                        <span id="vlm-category" class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-dustyRose/15 text-dustyRose mb-1">
+                            From Him to Her
+                        </span>
+                        <h3 id="vlm-title" class="font-serifHeader text-2xl md:text-3xl font-bold text-sepiaText">
+                            Envelope Title
+                        </h3>
+                        <p id="vlm-date" class="text-xs text-sepiaText/60 mt-1">Written on Today</p>
+                    </div>
+                    
+                    <div class="w-14 h-14 wax-seal rounded-full flex flex-col items-center justify-center text-white text-[10px] font-bold shadow-md">
+                        <span>LOVE</span>
+                        <i class="fa-solid fa-heart text-[8px] my-0.5"></i>
+                    </div>
+                </div>
+
+                <!-- Letter Content -->
+                <div class="my-6">
+                    <p id="vlm-message" class="font-serifHeader text-lg md:text-xl leading-relaxed whitespace-pre-wrap text-sepiaText/90">
+                        Letter message here...
+                    </p>
+                </div>
+
+                <!-- Read Receipt Status Footer -->
+                <div class="border-t border-warmBorder pt-4 mt-8 flex flex-wrap justify-between items-center gap-3 text-xs">
+                    <div id="vlm-seen-status" class="flex items-center gap-2 text-dustyRose font-semibold">
+                        <!-- Filled dynamically -->
+                    </div>
+
+                    <button onclick="closeLetterModal()" class="bg-sepiaText hover:bg-sepiaText/90 text-white px-5 py-2 rounded-full font-medium shadow-md">
+                        Fold & Close Envelope
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- VIEW BOUQUET KEEPSAKE MODAL -->
+    <div id="view-bouquet-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-sepiaText/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-cream rounded-3xl max-w-lg w-full p-6 md:p-8 border border-warmBorder shadow-2xl relative">
+            <button onclick="closeBouquetModal()" class="absolute top-4 right-4 text-sepiaText/50 hover:text-sepiaText text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="text-center">
+                <div class="w-20 h-20 rounded-full bg-softPink border border-dustyRose mx-auto flex items-center justify-center text-3xl shadow-inner mb-3">
+                    💐
+                </div>
+                <h3 id="vbm-title" class="font-serifHeader text-2xl font-bold text-sepiaText">Bouquet Title</h3>
+                <p id="vbm-sender" class="text-xs text-dustyRose font-bold uppercase tracking-wider mt-1">From Her</p>
+
+                <div id="vbm-flowers" class="flex flex-wrap justify-center gap-1.5 my-4">
+                    <!-- Flower tags -->
+                </div>
+
+                <div class="parchment-sheet rounded-2xl p-4 my-4 text-left border border-warmBorder">
+                    <p id="vbm-note" class="font-sansBody text-sm text-sepiaText whitespace-pre-wrap leading-relaxed">
+                        Card note...
+                    </p>
+                </div>
+
+                <p id="vbm-seen-status" class="text-xs text-dustyRose font-semibold mb-4">Seen status</p>
+
+                <button onclick="closeBouquetModal()" class="bg-sepiaText text-white px-6 py-2 rounded-full text-xs font-semibold">
+                    Close Keepsake
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Particle Canvas for Hearts Explosion -->
+    <canvas id="heart-canvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        /* ==========================================================================
+           1. DATA PERSISTENCE & INITIAL STATE
+           ========================================================================== */
+        const STORAGE_KEY_LETTERS = 'love_letters_data_v3';
+        const STORAGE_KEY_BOUQUETS = 'love_bouquets_data_v3';
+        const STORAGE_KEY_PETS = 'dog_pet_count_v3';
+
+        let activePersona = 'him'; // 'him' or 'her'
+        let petCount = 0;
+        let isMusicPlaying = false;
+        let audioContext = null;
+        let customAudioSource = null;
+
+        const defaultLetters = [
+            {
+                id: 'let-1',
+                title: "Read when you're feeling sad...",
+                sender: 'Him',
+                recipient: 'Her',
+                date: 'Sept 2026',
+                message: "My sweet girl,\n\nWhenever sad thoughts creep in, I want you to remember that you are never alone. I am always right here holding your hand in spirit. Take a deep breath, sip a warm cup of tea, and remember how deeply loved you are!",
+                readStatus: {
+                    readByHim: true,
+                    readByHer: false,
+                    dateHim: 'Sept 2026',
+                    dateHer: null
+                }
+            },
+            {
+                id: 'let-2',
+                title: "Read when you miss me...",
+                sender: 'Her',
+                recipient: 'Him',
+                date: 'Sept 2026',
+                message: "Hey handsome!\n\nIf you're missing me right now, close your eyes for 5 seconds. Imagine me giving you the biggest hug ever. I love you so much and I can't wait to see you soon!",
+                readStatus: {
+                    readByHim: false,
+                    readByHer: true,
+                    dateHim: null,
+                    dateHer: 'Sept 2026'
+                }
+            },
+            {
+                id: 'let-3',
+                title: "Read when you need a gentle laugh",
+                sender: 'Him',
+                recipient: 'Her',
+                date: 'Sept 2026',
+                message: "Why did the couple go to the bakery?\nBecause they needed a whole lot of 'loaf' and sweet treats! 🍞💕\n\nHope that brought a little smile to your cute face today!",
+                readStatus: {
+                    readByHim: true,
+                    readByHer: true,
+                    dateHim: 'Sept 2026',
+                    dateHer: 'Sept 2026'
+                }
+            }
+        ];
+
+        const defaultBouquets = [
+            {
+                id: 'bq-1',
+                title: 'Morning Sunshine Roses',
+                sender: 'Her',
+                recipient: 'Him',
+                flowers: ['🌹 Red Roses', '🌻 Sunflowers'],
+                wrap: 'pink',
+                date: 'Sept 2026',
+                note: 'A bright little bouquet to start your morning with love! Thinking of you always.',
+                readStatus: {
+                    readByHim: false,
+                    readByHer: true
+                }
+            }
+        ];
+
+        let letters = [];
+        let bouquets = [];
+
+        function loadStorage() {
+            const l = localStorage.getItem(STORAGE_KEY_LETTERS);
+            const b = localStorage.getItem(STORAGE_KEY_BOUQUETS);
+            const p = localStorage.getItem(STORAGE_KEY_PETS);
+
+            letters = l ? JSON.parse(l) : defaultLetters;
+            bouquets = b ? JSON.parse(b) : defaultBouquets;
+            petCount = p ? parseInt(p, 10) : 12;
+
+            if (!l) saveStorage();
+            updatePetDisplay();
+        }
+
+        function saveStorage() {
+            localStorage.setItem(STORAGE_KEY_LETTERS, JSON.stringify(letters));
+            localStorage.setItem(STORAGE_KEY_BOUQUETS, JSON.stringify(bouquets));
+            localStorage.setItem(STORAGE_KEY_PETS, petCount.toString());
+        }
+
+        /* ==========================================================================
+           2. PERSONA SWITCHER LOGIC
+           ========================================================================== */
+        function setPersona(role) {
+            activePersona = role;
+
+            const btnHim = document.getElementById('role-him');
+            const btnHer = document.getElementById('role-her');
+            const iconEl = document.getElementById('persona-badge-icon');
+            const titleEl = document.getElementById('persona-welcome-title');
+            const subEl = document.getElementById('persona-welcome-sub');
+
+            if (role === 'him') {
+                btnHim.className = 'px-3 py-1.5 rounded-xl font-semibold transition-all bg-sepiaText text-white shadow-sm flex items-center gap-1.5';
+                btnHer.className = 'px-3 py-1.5 rounded-xl font-semibold transition-all text-sepiaText hover:text-sepiaText/80 flex items-center gap-1.5';
+                iconEl.innerText = '👦';
+                titleEl.innerText = 'Welcome back, Handsome!';
+                subEl.innerText = 'Viewing as Him. Opening envelopes automatically marks them as seen by you!';
+            } else {
+                btnHer.className = 'px-3 py-1.5 rounded-xl font-semibold transition-all bg-dustyRose text-white shadow-sm flex items-center gap-1.5';
+                btnHim.className = 'px-3 py-1.5 rounded-xl font-semibold transition-all text-sepiaText hover:text-sepiaText/80 flex items-center gap-1.5';
+                iconEl.innerText = '👧';
+                titleEl.innerText = 'Welcome, My Beautiful Girl! 💖';
+                subEl.innerText = 'Viewing as Her. Open any letter or send a sweet bouquet to him below!';
+            }
+
+            renderEnvelopes();
+            renderBouquets();
+        }
+
+        /* ==========================================================================
+           3. RENDER ENVELOPES & BOUQUETS
+           ========================================================================== */
+        function renderEnvelopes() {
+            const grid = document.getElementById('envelope-grid');
+            grid.innerHTML = '';
+
+            letters.forEach(letter => {
+                const isReadByMe = activePersona === 'him' ? letter.readStatus.readByHim : letter.readStatus.readByHer;
+                const isReadByPartner = activePersona === 'him' ? letter.readStatus.readByHer : letter.readStatus.readByHim;
+                const partnerName = activePersona === 'him' ? 'Her' : 'Him';
+
+                const card = `
+                    <div onclick="openLetterModal('${letter.id}')" class="bounce-card cursor-pointer group">
+                        <div class="envelope-body p-6 h-56 flex flex-col justify-between relative overflow-hidden">
+                            <div class="envelope-flap"></div>
+
+                            <div class="flex justify-between items-center z-10 text-[11px]">
+                                <span class="px-2.5 py-1 rounded-full font-bold ${isReadByMe ? 'bg-cream text-sepiaText border border-warmBorder' : 'bg-dustyRose text-white shadow-sm'}">
+                                    ${isReadByMe ? '✓ Opened' : '💌 New Envelope'}
+                                </span>
+
+                                ${isReadByPartner ? `
+                                    <span class="text-[10px] text-dustyRose bg-cream/90 px-2.5 py-0.5 rounded-full border border-dustyRose/20 font-semibold" title="Read by ${partnerName}">
+                                        Seen by ${partnerName}
+                                    </span>
+                                ` : ''}
+                            </div>
+
+                            <div class="my-auto text-center z-10 px-2">
+                                <span class="text-[10px] uppercase font-bold text-dustyRose tracking-wider">From ${letter.sender}</span>
+                                <h3 class="font-serifHeader font-bold text-lg md:text-xl text-sepiaText mt-1 line-clamp-2">
+                                    "${letter.title}"
+                                </h3>
+                            </div>
+
+                            <div class="flex justify-between items-end z-10">
+                                <span class="text-[10px] text-sepiaText/60 font-medium">${letter.date || 'Recent'}</span>
+                                <div class="wax-seal w-9 h-9 rounded-full flex items-center justify-center text-white text-xs shadow-md transform group-hover:scale-110 transition-transform">
+                                    <i class="fa-solid fa-heart"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.insertAdjacentHTML('beforeend', card);
+            });
+        }
+
+        function renderBouquets() {
+            const grid = document.getElementById('bouquet-grid');
+            grid.innerHTML = '';
+
+            if (bouquets.length === 0) {
+                grid.innerHTML = `<p class="col-span-full text-sepiaText/60 text-xs">No bouquet gifts sent yet!</p>`;
+                return;
+            }
+
+            bouquets.forEach(bq => {
+                const isReadByMe = activePersona === 'him' ? bq.readStatus.readByHim : bq.readStatus.readByHer;
+
+                const card = `
+                    <div onclick="openBouquetModal('${bq.id}')" class="bg-cream rounded-2xl border border-warmBorder p-5 shadow-sm hover:shadow-md bounce-card cursor-pointer text-left">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <div class="w-12 h-12 rounded-full bg-softPink border border-dustyRose flex items-center justify-center text-2xl shadow-sm">
+                                💐
+                            </div>
+                            <div>
+                                <span class="text-[10px] uppercase font-bold text-dustyRose">From ${bq.sender}</span>
+                                <h4 class="font-serifHeader font-bold text-sepiaText text-base">${bq.title}</h4>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap gap-1 my-2">
+                            ${bq.flowers.map(f => `<span class="bg-parchment text-sepiaText text-[10px] px-2 py-0.5 rounded-full border border-warmBorder font-medium">${f}</span>`).join('')}
+                        </div>
+
+                        <p class="font-sansBody text-xs text-sepiaText/80 line-clamp-2 italic bg-parchment/50 p-2 rounded-lg border border-warmBorder mt-2">
+                            "${bq.note}"
+                        </p>
+
+                        <div class="mt-3 pt-2 border-t border-warmBorder flex justify-between items-center text-[10px]">
+                            <span class="${isReadByMe ? 'text-sepiaText/60' : 'text-dustyRose font-bold'}">
+                                ${isReadByMe ? '✓ Viewed' : '🎁 Unopened Gift'}
+                            </span>
+                            <span class="text-dustyRose font-semibold">View Bouquet Card →</span>
+                        </div>
+                    </div>
+                `;
+                grid.insertAdjacentHTML('beforeend', card);
+            });
+        }
+
+        /* ==========================================================================
+           4. MODAL INTERACTIONS
+           ========================================================================== */
+        function openLetterModal(id) {
+            const letter = letters.find(l => l.id === id);
+            if (!letter) return;
+
+            const now = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+            if (activePersona === 'him' && !letter.readStatus.readByHim) {
+                letter.readStatus.readByHim = true;
+                letter.readStatus.dateHim = now;
+            } else if (activePersona === 'her' && !letter.readStatus.readByHer) {
+                letter.readStatus.readByHer = true;
+                letter.readStatus.dateHer = now;
+            }
+
+            saveStorage();
+            renderEnvelopes();
+
+            document.getElementById('vlm-title').innerText = letter.title;
+            document.getElementById('vlm-category').innerText = `From ${letter.sender} To ${letter.recipient}`;
+            document.getElementById('vlm-date').innerText = letter.date || now;
+            document.getElementById('vlm-message').innerText = letter.message;
+
+            const partnerName = activePersona === 'him' ? 'Her' : 'Him';
+            const isPartnerRead = activePersona === 'him' ? letter.readStatus.readByHer : letter.readStatus.readByHim;
+            const partnerDate = activePersona === 'him' ? letter.readStatus.dateHer : letter.readStatus.dateHim;
+
+            const statusEl = document.getElementById('vlm-seen-status');
+            if (isPartnerRead) {
+                statusEl.innerHTML = `<i class="fa-solid fa-check-double text-green-600"></i> Seen & Read by ${partnerName} ${partnerDate ? `(${partnerDate})` : ''} ♡`;
+            } else {
+                statusEl.innerHTML = `<i class="fa-solid fa-envelope"></i> Waiting for ${partnerName} to open...`;
+            }
+
+            const modal = document.getElementById('view-letter-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+            triggerHeartExplosion();
+        }
+
+        function closeLetterModal() {
+            const modal = document.getElementById('view-letter-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+
+        function handleSendGift(e) {
+            e.preventDefault();
+            const sender = document.getElementById('gift-sender').value;
+            const title = document.getElementById('gift-title').value.trim();
+            const message = document.getElementById('gift-message').value.trim();
+            
+            const flowerCbs = document.getElementsByName('gift-flowers');
+            let selectedFlowers = [];
+            for (let cb of flowerCbs) { if (cb.checked) selectedFlowers.push(cb.value); }
+            if (selectedFlowers.length === 0) selectedFlowers = ['🌹 Red Roses'];
+
+            const wrapRadios = document.getElementsByName('gift-wrap');
+            let selectedWrap = 'kraft';
+            for (let r of wrapRadios) { if (r.checked) selectedWrap = r.value; }
+
+            const recipient = sender === 'Him' ? 'Her' : 'Him';
+            const now = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+            // Add letter
+            letters.unshift({
+                id: 'let-' + Date.now(),
+                title: title,
+                sender: sender,
+                recipient: recipient,
+                date: now,
+                message: message,
+                readStatus: {
+                    readByHim: sender === 'Him',
+                    readByHer: sender === 'Her',
+                    dateHim: sender === 'Him' ? now : null,
+                    dateHer: sender === 'Her' ? now : null
+                }
+            });
+
+            // Add bouquet
+            bouquets.unshift({
+                id: 'bq-' + Date.now(),
+                title: title,
+                sender: sender,
+                recipient: recipient,
+                flowers: selectedFlowers,
+                wrap: selectedWrap,
+                date: now,
+                note: message,
+                readStatus: {
+                    readByHim: sender === 'Him',
+                    readByHer: sender === 'Her'
+                }
+            });
+
+            saveStorage();
+            renderEnvelopes();
+            renderBouquets();
+            document.getElementById('atelier-form').reset();
+            triggerHeartExplosion();
+        }
+
+        function openBouquetModal(id) {
+            const bq = bouquets.find(b => b.id === id);
+            if (!bq) return;
+
+            if (activePersona === 'him') bq.readStatus.readByHim = true;
+            if (activePersona === 'her') bq.readStatus.readByHer = true;
+            saveStorage();
+            renderBouquets();
+
+            document.getElementById('vbm-title').innerText = bq.title;
+            document.getElementById('vbm-sender').innerText = `From ${bq.sender} To ${bq.recipient}`;
+            document.getElementById('vbm-note').innerText = bq.note;
+            document.getElementById('vbm-flowers').innerHTML = bq.flowers.map(f => `<span class="bg-parchment text-sepiaText text-xs px-2.5 py-1 rounded-full border border-warmBorder font-semibold">${f}</span>`).join('');
+
+            const partnerName = activePersona === 'him' ? 'Her' : 'Him';
+            const isPartnerRead = activePersona === 'him' ? bq.readStatus.readByHer : bq.readStatus.readByHim;
+            document.getElementById('vbm-seen-status').innerText = isPartnerRead ? `✓ Seen by ${partnerName}` : `Waiting for ${partnerName} to open...`;
+
+            const modal = document.getElementById('view-bouquet-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+            triggerHeartExplosion();
+        }
+
+        function closeBouquetModal() {
+            const modal = document.getElementById('view-bouquet-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+
+        /* ==========================================================================
+           5. INTERACTIVE PET DOG LOGIC & FLOATING HEARTS
+           ========================================================================== */
+        function petTheDog(e) {
+            petCount++;
+            saveStorage();
+            updatePetDisplay();
+
+            // Spawn floating heart element
+            const spawnArea = document.getElementById('heart-spawn-area');
+            const heart = document.createElement('div');
+            heart.className = 'pet-heart';
+            
+            const heartIcons = ['💖', '💕', '🐶', '💗', '🐾', '❤️'];
+            heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+            
+            // Random horizontal offset
+            const offsetX = (Math.random() - 0.5) * 80;
+            heart.style.left = `calc(50% + ${offsetX}px)`;
+
+            spawnArea.appendChild(heart);
+            setTimeout(() => heart.remove(), 1200);
+
+            // Play pet audio sound effect
+            playPopSound();
+        }
+
+        function updatePetDisplay() {
+            document.getElementById('pet-count-display').innerText = `Pets Received: ${petCount} 💕`;
+        }
+
+        function playPopSound() {
+            try {
+                if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioContext.state === 'suspended') audioContext.resume();
+
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(440, audioContext.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(880, audioContext.currentTime + 0.1);
+
+                gain.gain.setValueAtTime(0.15, audioContext.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.12);
+
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+
+                osc.start();
+                osc.stop(audioContext.currentTime + 0.12);
+            } catch (err) {
+                // Silently ignore audio block restrictions
+            }
+        }
+
+        /* ==========================================================================
+           6. AUDIO MUSIC PLAYER & SYNTHESIZER
+           ========================================================================== */
+        function toggleMusic() {
+            if (isMusicPlaying) {
+                isMusicPlaying = false;
+                if (customAudioSource && customAudioSource.pause) {
+                    customAudioSource.pause();
+                }
+                document.getElementById('music-sub').innerText = 'Paused';
+                document.getElementById('music-icon').className = 'fa-solid fa-music text-xs';
+            } else {
+                if (customAudioSource && customAudioSource.play) {
+                    customAudioSource.play();
+                    isMusicPlaying = true;
+                    document.getElementById('music-sub').innerText = 'Playing MP3';
+                    document.getElementById('music-icon').className = 'fa-solid fa-pause text-xs';
+                } else {
+                    playAcousticSynth();
+                }
+            }
+        }
+
+        function playAcousticSynth() {
+            try {
+                if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioContext.state === 'suspended') audioContext.resume();
+
+                isMusicPlaying = true;
+                document.getElementById('music-sub').innerText = 'Playing Soft Melody';
+                document.getElementById('music-icon').className = 'fa-solid fa-pause text-xs';
+
+                const notes = [261.63, 329.63, 392.00, 493.88, 220.00, 261.63, 329.63, 392.00];
+                let idx = 0;
+
+                function loop() {
+                    if (!isMusicPlaying) return;
+                    const osc = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
+
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(notes[idx % notes.length], audioContext.currentTime);
+
+                    gain.gain.setValueAtTime(0.001, audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.08, audioContext.currentTime + 0.1);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 1.2);
+
+                    osc.connect(gain);
+                    gain.connect(audioContext.destination);
+
+                    osc.start();
+                    osc.stop(audioContext.currentTime + 1.25);
+
+                    idx++;
+                    setTimeout(loop, 700);
+                }
+
+                loop();
+            } catch (err) {
+                console.log(err);
+            }
+        }
+
+        function uploadAudioSong(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            if (isMusicPlaying) toggleMusic();
+
+            const audioUrl = URL.createObjectURL(file);
+            customAudioSource = new Audio(audioUrl);
+            customAudioSource.loop = true;
+
+            customAudioSource.play();
+            isMusicPlaying = true;
+            document.getElementById('music-title').innerText = file.name.substring(0, 14) + '...';
+            document.getElementById('music-sub').innerText = 'Playing Song';
+            document.getElementById('music-icon').className = 'fa-solid fa-pause text-xs';
+        }
+
+        /* ==========================================================================
+           7. CONFETTI HEART EXPLOSION CANVAS
+           ========================================================================== */
+        function triggerHeartExplosion() {
+            const canvas = document.getElementById('heart-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+            const colors = ['#d98880', '#fbe3e0', '#cde3d6', '#f4a259', '#e86a7c'];
+
+            for (let i = 0; i < 35; i++) {
+                particles.push({
+                    x: canvas.width / 2,
+                    y: canvas.height / 2,
+                    size: Math.random() * 8 + 6,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    vx: (Math.random() - 0.5) * 9,
+                    vy: (Math.random() - 0.7) * 9,
+                    alpha: 1
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let active = false;
+
+                particles.forEach(p => {
+                    if (p.alpha > 0) {
+                        active = true;
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        p.vy += 0.15;
+                        p.alpha -= 0.02;
+
+                        ctx.globalAlpha = Math.max(0, p.alpha);
+                        ctx.fillStyle = p.color;
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                });
+
+                if (active) requestAnimationFrame(animate);
+                else ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+
+            animate();
+        }
+
+        /* ==========================================================================
+           8. INIT ON DOM LOAD
+           ========================================================================== */
+        window.addEventListener('DOMContentLoaded', () => {
+            loadStorage();
+            setPersona('him');
+        });
+    </script>
+</body>
+</html>
