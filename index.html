@@ -16,7 +16,7 @@
     .font-serif-title { font-family: 'Cinzel', serif; }
     .font-handwriting { font-family: 'Caveat', cursive; }
     
-    /* Gentle Moving Sky & Cloud Animations */
+    /* Moving Sky & Cloud Animations */
     .sky-container {
       background: linear-gradient(180deg, #BAE6FD 0%, #E0F2FE 50%, #FAF8F5 100%);
       position: relative;
@@ -48,13 +48,13 @@
       100% { transform: translateX(100vw); }
     }
 
-    /* Grass & Ground Horizon */
+    /* Grass Horizon */
     .grass-horizon {
       background: linear-gradient(180deg, #A7F3D0 0%, #059669 100%);
       border-radius: 50% 50% 0 0 / 20px 20px 0 0;
     }
 
-    /* Floating Heart Particles on Dog Pet */
+    /* Floating Hearts */
     .floating-heart {
       position: absolute;
       font-size: 20px;
@@ -68,7 +68,6 @@
       100% { opacity: 0; transform: translateY(-120px) scale(1) rotate(-15deg); }
     }
 
-    /* Crayon-Drawn SVG Filter for Realistic Hand-Drawn Texture */
     .crayon-style {
       filter: url(#crayon-filter);
     }
@@ -76,7 +75,7 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between">
 
-  <!-- SVG Crayon Texture Filter (Built-in) -->
+  <!-- SVG Crayon Texture Filter -->
   <svg class="hidden">
     <defs>
       <filter id="crayon-filter" x="-10%" y="-10%" width="120%" height="120%">
@@ -86,7 +85,7 @@
     </defs>
   </svg>
 
-  <!-- HEADER / NAV -->
+  <!-- HEADER -->
   <header class="border-b border-stone-200 bg-white/80 backdrop-blur-md sticky top-0 z-40">
     <div class="max-w-5xl mx-auto px-4 py-4 flex flex-wrap items-center justify-between gap-4">
       <div class="flex items-center gap-3">
@@ -100,8 +99,8 @@
       </div>
 
       <div class="flex items-center gap-3">
-        <span class="text-xs font-medium text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 flex items-center gap-1.5">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Live Cloud Sync Active
+        <span id="sync-status" class="text-xs font-medium text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Instant Active
         </span>
         <button onclick="openModal()" class="bg-rose-500 hover:bg-rose-600 text-white px-4 py-2 rounded-xl text-sm font-medium shadow-sm transition flex items-center gap-2">
           ✏️ Send Letter / Bouquet
@@ -110,10 +109,10 @@
     </div>
   </header>
 
-  <!-- MAIN CONTENT CONTAINER -->
+  <!-- MAIN CONTAINER -->
   <main class="max-w-5xl mx-auto px-4 py-8 flex-1 w-full space-y-12">
     
-    <!-- NAVIGATION TABS -->
+    <!-- TABS -->
     <div class="flex gap-2 border-b border-stone-200 pb-1">
       <button id="tab-letters" onclick="switchTab('letters')" class="px-5 py-2.5 rounded-t-xl font-medium text-sm transition flex items-center gap-2 bg-stone-800 text-white">
         ❤️ Love Letters & Bouquets (<span id="count-letters">0</span>)
@@ -123,14 +122,12 @@
       </button>
     </div>
 
-    <!-- TAB 1: LOVE LETTERS CONTAINER -->
+    <!-- TAB 1: LOVE LETTERS -->
     <section id="view-letters" class="space-y-6">
-      <div id="letters-list" class="grid gap-6 md:grid-cols-2">
-        <div class="col-span-full text-center py-12 text-stone-400">Loading shared letters...</div>
-      </div>
+      <div id="letters-list" class="grid gap-6 md:grid-cols-2"></div>
     </section>
 
-    <!-- TAB 2: STICKY NOTES CONTAINER -->
+    <!-- TAB 2: STICKY NOTES -->
     <section id="view-notes" class="hidden space-y-6">
       <div class="flex justify-between items-center bg-amber-50/50 border border-amber-100 p-4 rounded-2xl">
         <p class="text-xs text-amber-800 font-medium">Leave quick sweet notes on the shared wall.</p>
@@ -141,10 +138,9 @@
       <div id="notes-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-4"></div>
     </section>
 
-    <!-- HORIZON & VIRTUAL PET DOG SECTION -->
+    <!-- VIRTUAL PET DOG -->
     <section class="rounded-3xl border border-sky-200/80 shadow-md overflow-hidden sky-container relative pt-12 pb-0">
       
-      <!-- Gentle Moving Clouds -->
       <div class="cloud cloud-1"></div>
       <div class="cloud cloud-2"></div>
 
@@ -154,10 +150,10 @@
         <p class="text-xs text-stone-600">Click or tap to pet him! Total Pets Shared: <span id="pet-counter" class="font-bold text-rose-500">0</span></p>
       </div>
 
-      <!-- Grass Ground Horizon -->
+      <!-- Grass Ground -->
       <div class="mt-12 grass-horizon py-8 px-6 relative flex flex-col items-center justify-end min-h-[180px]">
         
-        <!-- Crayon-drawn Realistic Flowers in Grass -->
+        <!-- Crayon-drawn Flowers -->
         <div class="absolute bottom-3 left-8 flex gap-4 crayon-style">
           <svg width="24" height="40" viewBox="0 0 24 40"><path d="M12 40 Q10 20 12 0" stroke="#047857" stroke-width="3" fill="none"/><circle cx="12" cy="6" r="6" fill="#F43F5E"/><circle cx="6" cy="12" r="6" fill="#F43F5E"/><circle cx="18" cy="12" r="6" fill="#F43F5E"/><circle cx="12" cy="18" r="6" fill="#F43F5E"/><circle cx="12" cy="12" r="4" fill="#FDE047"/></svg>
           <svg width="20" height="35" viewBox="0 0 20 35"><path d="M10 35 Q12 18 10 0" stroke="#047857" stroke-width="3" fill="none"/><circle cx="10" cy="8" r="7" fill="#A855F7"/><circle cx="10" cy="8" r="3" fill="#FEF08A"/></svg>
@@ -167,31 +163,22 @@
           <svg width="24" height="42" viewBox="0 0 24 42"><path d="M12 42 Q14 21 12 0" stroke="#047857" stroke-width="3" fill="none"/><circle cx="12" cy="6" r="6" fill="#FB923C"/><circle cx="6" cy="12" r="6" fill="#FB923C"/><circle cx="18" cy="12" r="6" fill="#FB923C"/><circle cx="12" cy="18" r="6" fill="#FB923C"/><circle cx="12" cy="12" r="4" fill="#FEF08A"/></svg>
         </div>
 
-        <!-- Crayon-Drawn Virtual Dog -->
+        <!-- Crayon Dog -->
         <div id="dog-container" onclick="petDog(event)" class="cursor-pointer relative transition-transform duration-150 active:scale-95 hover:scale-105 crayon-style">
           <svg id="dog-svg" width="120" height="110" viewBox="0 0 120 110" fill="none" class="drop-shadow-md">
-            <!-- Tail -->
             <path id="dog-tail" d="M25 65 Q10 50 18 35" stroke="#D97706" stroke-width="8" stroke-linecap="round"/>
-            <!-- Body -->
             <ellipse cx="55" cy="70" rx="35" ry="25" fill="#F59E0B" stroke="#B45309" stroke-width="3"/>
-            <!-- Front Legs -->
             <rect x="40" y="85" width="10" height="20" rx="5" fill="#D97706" stroke="#B45309" stroke-width="2"/>
             <rect x="60" y="85" width="10" height="20" rx="5" fill="#D97706" stroke="#B45309" stroke-width="2"/>
-            <!-- Back Legs Sitting -->
             <ellipse cx="28" cy="82" rx="12" ry="10" fill="#D97706" stroke="#B45309" stroke-width="2"/>
             <ellipse cx="82" cy="82" rx="12" ry="10" fill="#D97706" stroke="#B45309" stroke-width="2"/>
-            <!-- Head -->
             <circle cx="75" cy="40" r="22" fill="#F59E0B" stroke="#B45309" stroke-width="3"/>
-            <!-- Ears -->
             <path d="M58 28 Q50 45 55 52" stroke="#78350F" stroke-width="7" stroke-linecap="round" fill="none"/>
             <path d="M92 28 Q100 45 95 52" stroke="#78350F" stroke-width="7" stroke-linecap="round" fill="none"/>
-            <!-- Snout & Nose -->
             <ellipse cx="82" cy="45" rx="9" ry="7" fill="#FEF3C7"/>
             <circle cx="85" cy="42" r="3" fill="#1F2937"/>
-            <!-- Eyes -->
             <circle cx="72" cy="35" r="3" fill="#1F2937"/>
             <circle cx="84" cy="35" r="3" fill="#1F2937"/>
-            <!-- Collar -->
             <path d="M60 56 Q75 62 88 56" stroke="#EF4444" stroke-width="5" stroke-linecap="round"/>
             <circle cx="74" cy="60" r="3" fill="#FBBF24"/>
           </svg>
@@ -202,7 +189,7 @@
 
   </main>
 
-  <!-- WRITE LETTER / BOUQUET MODAL -->
+  <!-- WRITE LETTER MODAL -->
   <div id="letter-modal" class="fixed inset-0 bg-stone-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-5 border border-stone-100 max-h-[90vh] overflow-y-auto">
       <div class="flex justify-between items-center">
@@ -232,14 +219,14 @@
         </div>
 
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1">Letter Content (Optional if sending bouquet)</label>
+          <label class="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1">Letter Content</label>
           <textarea id="input-content" rows="5" placeholder="Write your letter here..." class="w-full px-4 py-2.5 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-rose-400 text-sm resize-none"></textarea>
         </div>
 
         <div class="flex justify-end gap-3 pt-2">
           <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-sm font-medium text-stone-500 hover:bg-stone-100 transition">Cancel</button>
           <button type="submit" id="submit-btn" class="bg-rose-500 hover:bg-rose-600 text-white px-5 py-2 rounded-xl text-sm font-medium transition shadow-sm">
-            💌 Send to Shared Cloud
+            💌 Send & Save Letter
           </button>
         </div>
       </form>
@@ -252,36 +239,36 @@
 
   <!-- SCRIPT LOGIC -->
   <script>
-    // SHARED JSONBIN API CONFIGURATION
+    const STORAGE_KEY = 'our_sanctuary_data';
     const BIN_ID = "6ab941fbac6210605afb43f6";
     const MASTER_KEY = "$2a$10$ZLaO4X0kBeZz10uq8UvgP.U7LmRqLFwJdG70bNO/6LW/nqBXuqUa6";
-    const BASE_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
 
     let appData = { letters: [], notes: [], pets: 0 };
 
-    // FETCH ALL SHARED DATA
-    async function loadCloudData() {
-      try {
-        const res = await fetch(`${BASE_URL}/latest`, {
-          headers: { "X-Master-Key": MASTER_KEY }
-        });
-        if (!res.ok) return;
-        const json = await res.json();
-        appData = json.record || { letters: [], notes: [], pets: 0 };
-        if (!appData.letters) appData.letters = [];
-        if (!appData.notes) appData.notes = [];
-        if (appData.pets === undefined) appData.pets = 0;
-
-        renderAll();
-      } catch (err) {
-        console.error("Error syncing cloud data:", err);
+    // INITIAL LOAD FROM LOCAL STORAGE (INSTANT SHOW)
+    function loadLocalData() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          appData = JSON.parse(saved);
+        } catch (e) {}
       }
+      if (!appData.letters) appData.letters = [];
+      if (!appData.notes) appData.notes = [];
+      if (appData.pets === undefined) appData.pets = 0;
+      renderAll();
     }
 
-    // SAVE DATA TO SHARED CLOUD BIN
-    async function saveCloudData() {
+    function saveLocalData() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+      renderAll();
+      syncToCloudBackground();
+    }
+
+    // BACKGROUND CLOUD SYNC (NON-BLOCKING)
+    async function syncToCloudBackground() {
       try {
-        await fetch(BASE_URL, {
+        await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -289,10 +276,28 @@
           },
           body: JSON.stringify(appData)
         });
-        loadCloudData();
       } catch (err) {
-        console.error("Error saving data:", err);
+        console.log("Background cloud sync error:", err);
       }
+    }
+
+    async function fetchCloudBackground() {
+      try {
+        const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+          headers: { "X-Master-Key": MASTER_KEY }
+        });
+        if (res.ok) {
+          const json = await res.json();
+          if (json.record) {
+            appData = json.record;
+            if (!appData.letters) appData.letters = [];
+            if (!appData.notes) appData.notes = [];
+            if (appData.pets === undefined) appData.pets = 0;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+            renderAll();
+          }
+        }
+      } catch (err) {}
     }
 
     // RENDER UI
@@ -301,10 +306,10 @@
       document.getElementById("count-notes").innerText = appData.notes.length;
       document.getElementById("pet-counter").innerText = appData.pets;
 
-      // Render Letters & Bouquets
+      // Render Letters
       const lettersList = document.getElementById("letters-list");
       if (appData.letters.length === 0) {
-        lettersList.innerHTML = `<div class="col-span-full text-center py-16 bg-white rounded-3xl border border-stone-200/80 shadow-sm"><p class="text-stone-500 font-medium">No letters or bouquets sent yet!</p><p class="text-xs text-stone-400 mt-1">Send a letter or bouquet above to sync live across devices.</p></div>`;
+        lettersList.innerHTML = `<div class="col-span-full text-center py-16 bg-white rounded-3xl border border-stone-200/80 shadow-sm"><p class="text-stone-500 font-medium">No letters or bouquets sent yet!</p><p class="text-xs text-stone-400 mt-1">Write a letter or bouquet above to get started.</p></div>`;
       } else {
         lettersList.innerHTML = appData.letters.map(letter => {
           let bouquetSvg = '';
@@ -327,10 +332,10 @@
               ${bouquetSvg}
               <div class="flex justify-between items-start border-b border-stone-100 pb-3">
                 <div>
-                  <h3 class="font-serif-title font-bold text-stone-800 text-lg">${escapeHtml(letter.title || 'Untitled Letter')}</h3>
+                  <h3 class="font-serif-title font-bold text-stone-800 text-lg">${escapeHtml(letter.title || 'Love Letter')}</h3>
                   <p class="text-xs text-stone-400 mt-0.5">From: <span class="font-semibold text-stone-600">${escapeHtml(letter.author)}</span> &bull; ${letter.date}</p>
                 </div>
-                <span class="text-xs bg-rose-50 text-rose-600 px-2.5 py-1 rounded-full font-medium">💌 Shared</span>
+                <span class="text-xs bg-rose-50 text-rose-600 px-2.5 py-1 rounded-full font-medium">💌 Saved</span>
               </div>
               ${letter.content ? `<p class="text-stone-700 text-sm whitespace-pre-wrap leading-relaxed">${escapeHtml(letter.content)}</p>` : ''}
             </div>
@@ -353,11 +358,8 @@
     }
 
     // FORM SUBMISSION
-    document.getElementById("write-letter-form").addEventListener("submit", async (e) => {
+    document.getElementById("write-letter-form").addEventListener("submit", (e) => {
       e.preventDefault();
-      const submitBtn = document.getElementById("submit-btn");
-      submitBtn.innerText = "Sending...";
-      submitBtn.disabled = true;
 
       const author = document.getElementById("input-author").value.trim();
       const title = document.getElementById("input-title").value.trim();
@@ -374,28 +376,24 @@
       };
 
       appData.letters.unshift(newLetter);
-      await saveCloudData();
+      saveLocalData();
 
       document.getElementById("write-letter-form").reset();
-      submitBtn.innerText = "💌 Send to Shared Cloud";
-      submitBtn.disabled = false;
       closeModal();
     });
 
     // ADD STICKY NOTE
-    async function addStickyNote() {
+    function addStickyNote() {
       const author = prompt("Your Name:") || "Anonymous";
       const text = prompt("Sticky Note Text:");
       if (!text) return;
 
       appData.notes.unshift({ id: Date.now(), author, text });
-      await saveCloudData();
+      saveLocalData();
     }
 
-    // PET DOG ACTION & FLOATING HEARTS
-    let petDebounce;
+    // PET DOG
     function petDog(e) {
-      // Spawn floating heart particle
       const container = document.getElementById("dog-container");
       const heart = document.createElement("div");
       heart.className = "floating-heart";
@@ -411,22 +409,14 @@
 
       setTimeout(() => heart.remove(), 1800);
 
-      // Tail wag animation
       const tail = document.getElementById("dog-tail");
       tail.style.transform = "rotate(15deg)";
       setTimeout(() => tail.style.transform = "rotate(0deg)", 200);
 
-      // Increment shared pets in cloud
       appData.pets += 1;
-      document.getElementById("pet-counter").innerText = appData.pets;
-
-      clearTimeout(petDebounce);
-      petDebounce = setTimeout(() => {
-        saveCloudData();
-      }, 1000);
+      saveLocalData();
     }
 
-    // UTILITIES
     function switchTab(tab) {
       ['letters', 'notes'].forEach(t => {
         document.getElementById(`view-${t}`).classList.add('hidden');
@@ -443,10 +433,10 @@
       return str ? str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : '';
     }
 
-    // AUTO POLLING EVERY 4 SECONDS FOR SHARED SYNC
     document.addEventListener("DOMContentLoaded", () => {
-      loadCloudData();
-      setInterval(loadCloudData, 4000);
+      loadLocalData();
+      fetchCloudBackground();
+      setInterval(fetchCloudBackground, 5000);
     });
   </script>
 </body>
