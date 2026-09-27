@@ -100,7 +100,7 @@
 
       <div class="flex items-center gap-3">
         <span id="sync-status" class="text-xs font-medium text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 flex items-center gap-1.5">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Instant Active
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Firebase Live
         </span>
         <button onclick="openModal()" class="bg-rose-500 hover:bg-rose-600 text-white px-4 py-2 rounded-xl text-sm font-medium shadow-sm transition flex items-center gap-2">
           ✏️ Send Letter / Bouquet
@@ -237,67 +237,50 @@
     Made with ❤️ for both of you. Always connected.
   </footer>
 
-  <!-- SCRIPT LOGIC -->
-  <script>
-    const STORAGE_KEY = 'our_sanctuary_data';
-    const BIN_ID = "6ab941fbac6210605afb43f6";
-    const MASTER_KEY = "$2a$10$ZLaO4X0kBeZz10uq8UvgP.U7LmRqLFwJdG70bNO/6LW/nqBXuqUa6";
+  <!-- FIREBASE MODULE & REALTIME SCRIPT LOGIC -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, onValue, set, push, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    // Your exact Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyB4_H0LSft_lD2vVNnYLnm2O_nKn4LPO_Q",
+      authDomain: "our-sanctuary-25558.firebaseapp.com",
+      databaseURL: "https://our-sanctuary-25558-default-rtdb.firebaseio.com",
+      projectId: "our-sanctuary-25558",
+      storageBucket: "our-sanctuary-25558.firebasestorage.app",
+      messagingSenderId: "740581812658",
+      appId: "1:740581812658:web:728a1e3074b3f9526f5cab",
+      measurementId: "G-C66746LHGR"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
     let appData = { letters: [], notes: [], pets: 0 };
 
-    // INITIAL LOAD FROM LOCAL STORAGE (INSTANT SHOW)
-    function loadLocalData() {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        try {
-          appData = JSON.parse(saved);
-        } catch (e) {}
+    // REALTIME DATABASE SYNC
+    const sanctuaryRef = ref(db, 'sanctuary_data');
+
+    onValue(sanctuaryRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        // Convert objects to arrays if stored as objects
+        appData.letters = data.letters ? (Array.isArray(data.letters) ? data.letters : Object.values(data.letters)) : [];
+        appData.notes = data.notes ? (Array.isArray(data.notes) ? data.notes : Object.values(data.notes)) : [];
+        appData.pets = data.pets || 0;
+
+        // Sort latest first
+        appData.letters.sort((a, b) => (b.id || 0) - (a.id || 0));
+        appData.notes.sort((a, b) => (b.id || 0) - (a.id || 0));
+      } else {
+        appData = { letters: [], notes: [], pets: 0 };
       }
-      if (!appData.letters) appData.letters = [];
-      if (!appData.notes) appData.notes = [];
-      if (appData.pets === undefined) appData.pets = 0;
       renderAll();
-    }
+    });
 
-    function saveLocalData() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
-      renderAll();
-      syncToCloudBackground();
-    }
-
-    // BACKGROUND CLOUD SYNC (NON-BLOCKING)
-    async function syncToCloudBackground() {
-      try {
-        await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Master-Key": MASTER_KEY
-          },
-          body: JSON.stringify(appData)
-        });
-      } catch (err) {
-        console.log("Background cloud sync error:", err);
-      }
-    }
-
-    async function fetchCloudBackground() {
-      try {
-        const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-          headers: { "X-Master-Key": MASTER_KEY }
-        });
-        if (res.ok) {
-          const json = await res.json();
-          if (json.record) {
-            appData = json.record;
-            if (!appData.letters) appData.letters = [];
-            if (!appData.notes) appData.notes = [];
-            if (appData.pets === undefined) appData.pets = 0;
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
-            renderAll();
-          }
-        }
-      } catch (err) {}
+    function saveToFirebase() {
+      set(sanctuaryRef, appData);
     }
 
     // RENDER UI
@@ -376,24 +359,24 @@
       };
 
       appData.letters.unshift(newLetter);
-      saveLocalData();
+      saveToFirebase();
 
       document.getElementById("write-letter-form").reset();
-      closeModal();
+      window.closeModal();
     });
 
     // ADD STICKY NOTE
-    function addStickyNote() {
+    window.addStickyNote = function() {
       const author = prompt("Your Name:") || "Anonymous";
       const text = prompt("Sticky Note Text:");
       if (!text) return;
 
       appData.notes.unshift({ id: Date.now(), author, text });
-      saveLocalData();
-    }
+      saveToFirebase();
+    };
 
     // PET DOG
-    function petDog(e) {
+    window.petDog = function(e) {
       const container = document.getElementById("dog-container");
       const heart = document.createElement("div");
       heart.className = "floating-heart";
@@ -413,31 +396,28 @@
       tail.style.transform = "rotate(15deg)";
       setTimeout(() => tail.style.transform = "rotate(0deg)", 200);
 
-      appData.pets += 1;
-      saveLocalData();
-    }
+      // Use Realtime Transaction for instant accurate pet incrementing across devices
+      const petRef = ref(db, 'sanctuary_data/pets');
+      runTransaction(petRef, (currentPets) => {
+        return (currentPets || 0) + 1;
+      });
+    };
 
-    function switchTab(tab) {
+    window.switchTab = function(tab) {
       ['letters', 'notes'].forEach(t => {
         document.getElementById(`view-${t}`).classList.add('hidden');
         document.getElementById(`tab-${t}`).className = "px-5 py-2.5 rounded-t-xl font-medium text-sm transition flex items-center gap-2 text-stone-600 hover:bg-stone-100";
       });
       document.getElementById(`view-${tab}`).classList.remove('hidden');
       document.getElementById(`tab-${tab}`).className = "px-5 py-2.5 rounded-t-xl font-medium text-sm transition flex items-center gap-2 bg-stone-800 text-white";
-    }
+    };
 
-    function openModal() { document.getElementById("letter-modal").classList.remove("hidden"); }
-    function closeModal() { document.getElementById("letter-modal").classList.add("hidden"); }
+    window.openModal = function() { document.getElementById("letter-modal").classList.remove("hidden"); };
+    window.closeModal = function() { document.getElementById("letter-modal").classList.add("hidden"); };
 
     function escapeHtml(str) {
       return str ? str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") : '';
     }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      loadLocalData();
-      fetchCloudBackground();
-      setInterval(fetchCloudBackground, 5000);
-    });
   </script>
 </body>
 </html>
