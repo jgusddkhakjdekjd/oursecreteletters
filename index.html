@@ -444,15 +444,13 @@
             collection, 
             doc, 
             addDoc, 
-            setDoc,
-            updateDoc,
-            deleteDoc,
-            onSnapshot,
-            arrayUnion,
-            increment
+            updateDoc, 
+            onSnapshot, 
+            arrayUnion, 
+            increment 
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Standardized room ID so both users always connect to the exact same sanctuary
+        // Shared room ID so both users always connect to the exact same sanctuary
         const appId = (typeof __app_id !== 'undefined' && __app_id) ? __app_id : 'our-love-letters-ina-shared';
         const firebaseConfig = typeof __firebase_config !== 'undefined' 
             ? JSON.parse(__firebase_config) 
@@ -461,17 +459,6 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-
-        // Track active permission-verified paths for writing
-        const activePaths = {
-            letters: ['artifacts', appId, 'public', 'data', 'letters'],
-            garden_flowers: ['artifacts', appId, 'public', 'data', 'garden_flowers'],
-            sticky_notes: ['artifacts', appId, 'public', 'data', 'sticky_notes']
-        };
-
-        function getColRef(collectionName) {
-            return collection(db, ...activePaths[collectionName]);
-        }
 
         // State Store
         window.state = {
@@ -484,19 +471,25 @@
             activeReadingLetterId: null
         };
 
-        async function initAuth() {
+        // Helper to ensure authenticated state before any DB operation
+        async function ensureAuth() {
+            if (auth.currentUser) return auth.currentUser;
             try {
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
+                    const userCred = await signInWithCustomToken(auth, __initial_auth_token);
+                    return userCred.user;
                 } else {
-                    await signInAnonymously(auth);
+                    const userCred = await signInAnonymously(auth);
+                    return userCred.user;
                 }
             } catch (err) {
                 console.warn("Auth token fallback:", err);
                 try {
-                    await signInAnonymously(auth);
+                    const anonCred = await signInAnonymously(auth);
+                    return anonCred.user;
                 } catch (anonErr) {
                     console.error("Anonymous auth failed:", anonErr);
+                    return null;
                 }
             }
         }
@@ -504,115 +497,101 @@
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 window.state.currentUser = user;
-                document.getElementById('syncBadge').className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-medium';
-                document.getElementById('syncText').textContent = 'Live Cloud Syncing';
+                const syncBadge = document.getElementById('syncBadge');
+                const syncText = document.getElementById('syncText');
+                if (syncBadge) syncBadge.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-medium';
+                if (syncText) syncText.textContent = 'Live Cloud Sync';
                 subscribeToRealtimeData();
             } else {
-                document.getElementById('syncBadge').className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-xs font-medium';
-                document.getElementById('syncText').textContent = 'Connecting...';
+                const syncBadge = document.getElementById('syncBadge');
+                const syncText = document.getElementById('syncText');
+                if (syncBadge) syncBadge.className = 'flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-xs font-medium';
+                if (syncText) syncText.textContent = 'Connecting...';
             }
         });
 
         // Setup Author selector
         const authorSelect = document.getElementById('authorSelect');
-        authorSelect.value = window.state.authorName;
-        authorSelect.addEventListener('change', (e) => {
-            if (e.target.value === 'Custom') {
-                const custom = prompt("Enter your name:", window.state.authorName);
-                if (custom && custom.trim()) {
-                    window.state.authorName = custom.trim();
+        if (authorSelect) {
+            authorSelect.value = window.state.authorName;
+            authorSelect.addEventListener('change', (e) => {
+                if (e.target.value === 'Custom') {
+                    const custom = prompt("Enter your name:", window.state.authorName);
+                    if (custom && custom.trim()) {
+                        window.state.authorName = custom.trim();
+                    }
+                } else {
+                    window.state.authorName = e.target.value;
                 }
-            } else {
-                window.state.authorName = e.target.value;
-            }
-            localStorage.setItem('love_letters_author', window.state.authorName);
-        });
+                localStorage.setItem('love_letters_author', window.state.authorName);
+            });
+        }
 
         function subscribeToRealtimeData() {
             if (!auth.currentUser) return;
 
-            // Robust listener that handles permission rules across canvas environments
-            function listenToCollection(collectionName, onData) {
-                const candidatePaths = [
-                    ['artifacts', appId, 'public', 'data', collectionName],
-                    ['public_data', collectionName],
-                    [collectionName]
-                ];
-
-                let currentIdx = 0;
-                let unsub = null;
-
-                function trySubscribe() {
-                    if (currentIdx >= candidatePaths.length) {
-                        console.warn(`Could not connect to Firestore for ${collectionName}.`);
-                        return;
-                    }
-
-                    const pathSegments = candidatePaths[currentIdx];
-                    currentIdx++;
-
-                    try {
-                        const targetRef = collection(db, ...pathSegments);
-                        unsub = onSnapshot(targetRef, (snapshot) => {
-                            activePaths[collectionName] = pathSegments; // Save working path
-                            const list = [];
-                            snapshot.forEach(docSnap => {
-                                list.push({ id: docSnap.id, ...docSnap.data(), _pathSegments: pathSegments });
-                            });
-                            onData(list);
-                        }, (error) => {
-                            if (error.code === 'permission-denied' || (error.message && error.message.includes('permissions'))) {
-                                if (unsub) unsub();
-                                trySubscribe();
-                            } else {
-                                console.error(`Error listening to ${collectionName}:`, error);
-                            }
-                        });
-                    } catch (err) {
-                        trySubscribe();
-                    }
-                }
-
-                trySubscribe();
-            }
-
             // 1. PUBLIC LETTERS COLLECTION
-            listenToCollection('letters', (list) => {
+            const lettersCol = collection(db, 'artifacts', appId, 'public', 'data', 'letters');
+            onSnapshot(lettersCol, (snapshot) => {
+                const list = [];
+                snapshot.forEach(docSnap => {
+                    list.push({ id: docSnap.id, ...docSnap.data() });
+                });
                 list.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+                
                 const isNew = list.length > window.state.letters.length && window.state.letters.length > 0;
                 window.state.letters = list;
                 
-                document.getElementById('letterCountBadge').textContent = list.length;
+                const countBadge = document.getElementById('letterCountBadge');
+                if (countBadge) countBadge.textContent = list.length;
                 window.renderLetters();
 
                 if (isNew) {
                     showToast("💌 A new love letter arrived!");
                 }
+            }, (error) => {
+                console.error("Error listening to letters:", error);
             });
 
             // 2. PUBLIC SKY GARDEN FLOWERS COLLECTION
-            listenToCollection('garden_flowers', (list) => {
+            const flowersCol = collection(db, 'artifacts', appId, 'public', 'data', 'garden_flowers');
+            onSnapshot(flowersCol, (snapshot) => {
+                const list = [];
+                snapshot.forEach(docSnap => {
+                    list.push({ id: docSnap.id, ...docSnap.data() });
+                });
                 list.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
                 window.state.flowers = list;
-                document.getElementById('flowerCountBadge').textContent = list.length;
+                const countBadge = document.getElementById('flowerCountBadge');
+                if (countBadge) countBadge.textContent = list.length;
                 window.renderGarden();
+            }, (error) => {
+                console.error("Error listening to garden_flowers:", error);
             });
 
             // 3. PUBLIC STICKY NOTES COLLECTION
-            listenToCollection('sticky_notes', (list) => {
+            const notesCol = collection(db, 'artifacts', appId, 'public', 'data', 'sticky_notes');
+            onSnapshot(notesCol, (snapshot) => {
+                const list = [];
+                snapshot.forEach(docSnap => {
+                    list.push({ id: docSnap.id, ...docSnap.data() });
+                });
                 list.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
                 window.state.notes = list;
                 window.renderNotes();
+            }, (error) => {
+                console.error("Error listening to sticky_notes:", error);
             });
         }
 
         window.handleSaveLetter = async function(e) {
             e.preventDefault();
-            if (!auth.currentUser) return;
 
             const submitBtn = document.getElementById('submitLetterBtn');
-            submitBtn.disabled = true;
-            submitBtn.innerText = "Sealing & Sending...";
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = `<span>Sealing & Sending...</span>`;
+            }
 
             const title = document.getElementById('letterTitle').value.trim();
             const theme = document.getElementById('letterTheme').value;
@@ -620,7 +599,13 @@
             const body = document.getElementById('letterBody').value.trim();
 
             try {
-                const lettersCol = getColRef('letters');
+                const user = await ensureAuth();
+                if (!user) {
+                    showToast("⚠️ Connecting to cloud... Please try again.");
+                    return;
+                }
+
+                const lettersCol = collection(db, 'artifacts', appId, 'public', 'data', 'letters');
                 await addDoc(lettersCol, {
                     title,
                     theme,
@@ -637,16 +622,17 @@
                 window.closeModal('writeModal');
             } catch (err) {
                 console.error("Failed to save letter:", err);
-                showToast("⚠️ Could not save letter. Try again.");
+                showToast("⚠️ Could not send letter. Check connection.");
             } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i><span>Seal & Send Letter</span>`;
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i><span>Seal & Send Letter</span>`;
+                }
             }
         };
 
         window.handlePlantFlower = async function(e) {
             e.preventDefault();
-            if (!auth.currentUser) return;
 
             const selectedIconElem = document.querySelector('input[name="flowerIcon"]:checked');
             const iconVal = selectedIconElem ? selectedIconElem.value : '🌸';
@@ -660,7 +646,10 @@
             };
 
             try {
-                const flowersCol = getColRef('garden_flowers');
+                const user = await ensureAuth();
+                if (!user) return;
+
+                const flowersCol = collection(db, 'artifacts', appId, 'public', 'data', 'garden_flowers');
                 await addDoc(flowersCol, {
                     icon: iconMap[iconVal] || '🌸',
                     note,
@@ -672,19 +661,22 @@
                 window.closeModal('plantFlowerModal');
             } catch (err) {
                 console.error("Error planting flower:", err);
+                showToast("⚠️ Could not plant flower.");
             }
         };
 
         window.handleSaveStickyNote = async function(e) {
             e.preventDefault();
-            if (!auth.currentUser) return;
 
             const content = document.getElementById('noteContent').value.trim();
             const colors = ['bg-amber-100 border-amber-200 text-amber-900', 'bg-rose-100 border-rose-200 text-rose-900', 'bg-emerald-100 border-emerald-200 text-emerald-900', 'bg-sky-100 border-sky-200 text-sky-900'];
             const randomColor = colors[Math.floor(Math.random() * colors.length)];
 
             try {
-                const notesCol = getColRef('sticky_notes');
+                const user = await ensureAuth();
+                if (!user) return;
+
+                const notesCol = collection(db, 'artifacts', appId, 'public', 'data', 'sticky_notes');
                 await addDoc(notesCol, {
                     content,
                     author: window.state.authorName,
@@ -696,17 +688,20 @@
                 window.closeModal('addNoteModal');
             } catch (err) {
                 console.error("Error posting note:", err);
+                showToast("⚠️ Could not post note.");
             }
         };
 
         window.toggleLetterHeart = async function() {
-            if (!window.state.activeReadingLetterId || !auth.currentUser) return;
+            if (!window.state.activeReadingLetterId) return;
             const letter = window.state.letters.find(l => l.id === window.state.activeReadingLetterId);
             if (!letter) return;
 
             try {
-                const pathSegments = letter._pathSegments || activePaths.letters;
-                const letterDoc = doc(db, ...pathSegments, letter.id);
+                const user = await ensureAuth();
+                if (!user) return;
+
+                const letterDoc = doc(db, 'artifacts', appId, 'public', 'data', 'letters', letter.id);
                 await updateDoc(letterDoc, { hearts: increment(1) });
             } catch (err) {
                 console.error("Failed to heart letter:", err);
@@ -714,7 +709,7 @@
         };
 
         window.markLetterAsRead = async function(letterId) {
-            if (!auth.currentUser || !letterId) return;
+            if (!letterId) return;
             const letter = window.state.letters.find(l => l.id === letterId);
             if (!letter) return;
 
@@ -723,8 +718,10 @@
 
             if (!readByList.includes(currentAuthor)) {
                 try {
-                    const pathSegments = letter._pathSegments || activePaths.letters;
-                    const letterDoc = doc(db, ...pathSegments, letterId);
+                    const user = await ensureAuth();
+                    if (!user) return;
+
+                    const letterDoc = doc(db, 'artifacts', appId, 'public', 'data', 'letters', letterId);
                     await updateDoc(letterDoc, {
                         readBy: arrayUnion(currentAuthor)
                     });
@@ -734,7 +731,8 @@
             }
         };
 
-        initAuth();
+        // Trigger auth initialization
+        ensureAuth();
     </script>
 
     <script>
